@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { Hero } from "./hero";
 import { HeroService } from "./hero.service";
+import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 
 @Component({
   selector: "my-app",
@@ -66,8 +67,12 @@ import { HeroService } from "./hero.service";
 ` ],
 providers: [HeroService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(private heroService: HeroService) { }
+
+  ngOnInit(): void {
+    this.getHeroes();
+  };
 
   title = "Tour of Heroes";
   heroes: Hero[];
@@ -76,6 +81,6 @@ export class AppComponent {
   }
   selectedHero: Hero;
   getHeroes(): void {
-    this.heroes = this.heroService.getHeroes();
+    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
   }
 }
